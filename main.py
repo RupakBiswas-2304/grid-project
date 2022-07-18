@@ -1,3 +1,5 @@
 from filefetcher import github
+from cli.cli import cli
 
-github.hello()
+
+cli()
