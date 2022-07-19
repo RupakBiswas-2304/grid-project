@@ -40,6 +40,8 @@ def cli():
                 Pypi_Code.extract_tar_gz()
             elif Pypi_Code.file_ext == "whl":
                 Pypi_Code.extract_whl()
+            elif Pypi_Code.file_ext == "zip":
+                Pypi_Code.extract_zip()
 
             code = Code(Pypi_Code)
             

@@ -51,7 +51,11 @@ class PypiClone():
             self.file_ext = "tar.gz"
         elif filename[-1] == "whl":
             self.file_ext = "whl"
-        
+        elif filename[-1] == "zip":
+            self.file_ext = "zip"
+
+        self.dependency = self.info["info"]["requires_dist"]
+
         print(f"Found downlaod link : {self.download_url}")
 
     def dowload_file(self):
@@ -86,3 +90,14 @@ class PypiClone():
             print("Error: Could not extract whl")
             sys.exit()
         print("Extracted whl")
+    
+    def extract_zip(self):
+        print("Extracting zip...")
+        try:
+            subprocess.call(["unzip", "tmp/{}".format(self.filename), "-d", "tmp"])
+            subprocess.call(["rm","-f", "tmp/{}".format(self.filename)])
+        except Exception as e:
+            print(e)
+            print("Error: Could not extract zip")
+            sys.exit()
+        print("Extracted zip")
