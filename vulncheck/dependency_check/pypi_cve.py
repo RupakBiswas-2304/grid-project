@@ -17,6 +17,12 @@ def check_pypi_CVE(module):
     existing_vuln = info['vulnerabilities']
     return existing_vuln
 
+def requirment_reader(filepath):
+    with open(filepath) as f:
+        content = f.readlines()
+    content = [x.strip() for x in content]
+    return content
+    
 # format of exsisting_vuln:
 '''
 [
