@@ -1,5 +1,4 @@
-import sys
-import subprocess
+from filefetcher import pypi
 
-
-subprocess.call(["rm", "-rf", "tmp/{*,.*}"])
+p = pypi.PypiClone("sticky-notes")
+p.gather_info()

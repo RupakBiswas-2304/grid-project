@@ -1,4 +1,5 @@
 from filefetcher.github import GithubClone
+from filefetcher.pypi import PypiClone
 
 def cli():
     print("Welcome to the file download utility!")
@@ -11,5 +12,15 @@ def cli():
             url = input("Enter the github url: ")
             Github_Code = GithubClone(url)
             Github_Code.download_repo()
+        elif command == "3":
+            url = input("Enter the pypi url: ")
+            Pypi_Code = PypiClone(url)
+            Pypi_Code.gather_info()
+            Pypi_Code.dowload_file()
+            print(Pypi_Code.file_ext,Pypi_Code.file_ext=="tar.gz")
+            if Pypi_Code.file_ext == "tar.gz":
+                Pypi_Code.extract_tar_gz()
+            elif Pypi_Code.file_ext == "whl":
+                Pypi_Code.extract_whl()
         else:
             print("Not implemented yet")
