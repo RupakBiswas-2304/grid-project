@@ -1,10 +1,11 @@
 from filefetcher.github import GithubClone
 from filefetcher.pypi import PypiClone
+from filefetcher.node import NodeClone
 
 def cli():
     print("Welcome to the file download utility!")
     while(True):
-        print("Enter your source:\n 1. Github\n 2. Local file\n 3. Pypi\n 4. Npm\n")
+        print("Enter your source:\n 1. Github\n 2. Node Module\n 3. Pypi\n 4. Local Repo\n")
         command = input("> ")
         if command == "exit" or command == "Exit":
             return
@@ -12,8 +13,17 @@ def cli():
             url = input("Enter the github url: ")
             Github_Code = GithubClone(url)
             Github_Code.download_repo()
+
+        elif command == "2":
+            url = input("Enter the node module name : ")
+            Node_Code = NodeClone(url)
+            Node_Code.gather_info()
+            Node_Code.download_file()
+            if Node_Code.file_ext == "tgz":
+                Node_Code.extract_tgz()
+
         elif command == "3":
-            url = input("Enter the pypi url: ")
+            url = input("Enter the pypi module name : ")
             Pypi_Code = PypiClone(url)
             Pypi_Code.gather_info()
             Pypi_Code.dowload_file()
