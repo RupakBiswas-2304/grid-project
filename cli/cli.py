@@ -1,6 +1,14 @@
 from filefetcher.github import GithubClone
 from filefetcher.pypi import PypiClone
 from filefetcher.node import NodeClone
+from vulncheck.dependency_check import main as main1
+
+class Code():
+    def __init__(self, source):
+        self.source = source
+
+    def dependency_check(self):
+        main1.main(self)
 
 def cli():
     print("Welcome to the file download utility!")
@@ -32,5 +40,8 @@ def cli():
                 Pypi_Code.extract_tar_gz()
             elif Pypi_Code.file_ext == "whl":
                 Pypi_Code.extract_whl()
+
+            code = Code(Pypi_Code)
+            
         else:
             print("Not implemented yet")

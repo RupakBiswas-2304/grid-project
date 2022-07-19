@@ -8,6 +8,7 @@ class PypiClone():
     '''
 
     def __init__(self,url) -> None:
+        self.type = "pypi"
         version = None
         if ("==" in url):
             version = url.split("==")[1]

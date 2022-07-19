@@ -4,6 +4,7 @@ import subprocess
 class GithubClone():
     def __init__(self,url):
         self.url = url
+        self.type = "github"
 
     def download_repo(self):
         print("Downloading repo...")

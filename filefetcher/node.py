@@ -4,6 +4,7 @@ import requests
 
 class NodeClone():
     def __init__(self,url):
+        self.type = "node"
         version = "latest"
         if ("==" in url):
             version = url.split("==")[1]
