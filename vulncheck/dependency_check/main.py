@@ -1,4 +1,4 @@
-from .pypi_cve import check_pypi_CVE
+from .pypi_cve import check_pypi_CVE,requirment_reader,check_requirements
 
 def main(code):
     if code.type == "pypi":
@@ -14,4 +14,13 @@ def main(code):
             for i in existing_dependency:
                 print(i)
     if code.type == "github":
-        pass
+        pypi_cve = None
+        try:
+            pypi_cve = check_requirements(code)
+        except Exception as e:
+            print (e)
+        CVEs = pypi_cve
+        # print(len(CVEs))
+        for cve in CVEs:
+            print(cve["aliases"])
+        return CVEs

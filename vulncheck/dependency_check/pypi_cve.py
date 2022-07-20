@@ -1,11 +1,14 @@
 import requests
+import re
 
 def check_pypi_CVE(module):
     version = None
     if ("==" in module):
         version = module.split("==")[1]
+        module = module.split("==")[0]
     elif (":" in module):
         version = module.split(":")[1]
+        module = module.split(":")[0]
 
     url = f"https://pypi.org/pypi/{module}/json"
     if version != None:
@@ -22,7 +25,20 @@ def requirment_reader(filepath):
         content = f.readlines()
     content = [x.strip() for x in content]
     return content
-    
+
+def check_requirements(code):
+    all_files = code.tree
+    pattern = "(req)[a-z]*\.txt"
+    requiremets = []
+    for file in all_files:
+        if re.search(pattern, file):
+            requiremets.extend(requirment_reader(file))
+    print(f"Found {len(requiremets)} requirements.")
+    CVES = []
+    for module in requiremets:
+        CVES.extend(check_pypi_CVE(module))
+    print(f"found {len(CVES)} CVEs")
+    return CVES
 # format of exsisting_vuln:
 '''
 [
