@@ -52,7 +52,7 @@ def cli():
         elif command == "4":
             url = input("Enter the local repo path : ")
             LocalClone_Code = LocalClone(url)
-            # LocalClone_Code.clone_repo()
+            LocalClone_Code.clone_repo()
             code = Code(LocalClone_Code,"github")
             code.dependency_check()            
         else:
