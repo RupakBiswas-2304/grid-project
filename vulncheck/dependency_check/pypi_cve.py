@@ -33,11 +33,11 @@ def check_requirements(code):
     for file in all_files:
         if re.search(pattern, file):
             requiremets.extend(requirment_reader(file))
-    print(f"Found {len(requiremets)} requirements.")
+    print(f"Found {len(requiremets)} python requirements.")
     CVES = []
     for module in requiremets:
         CVES.extend(check_pypi_CVE(module))
-    print(f"found {len(CVES)} CVEs")
+    print(f"found {len(CVES)} CVEs in python requirements.")
     return CVES
 # format of exsisting_vuln:
 '''

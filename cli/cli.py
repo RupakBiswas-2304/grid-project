@@ -57,3 +57,4 @@ def cli():
             code.dependency_check()            
         else:
             print("Not implemented yet")
+        return
