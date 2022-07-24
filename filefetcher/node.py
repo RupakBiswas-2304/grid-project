@@ -2,8 +2,9 @@ import sys
 import subprocess
 import requests
 
+
 class NodeClone():
-    def __init__(self,url):
+    def __init__(self, url):
         self.type = "node"
         version = "latest"
         if ("==" in url):
@@ -12,11 +13,10 @@ class NodeClone():
         elif (":" in url):
             url = url.split(":")[0]
             version = url.split(":")[1]
-        
+
         self.url = url
         self.version = version
         self.info_page_api = f"https://registry.npmjs.org/{url}/{version}"
-
 
     def gather_info(self) -> None:
         print("Gathering info ...")
@@ -29,7 +29,7 @@ class NodeClone():
             print(e)
             print("Error: Could not gather info")
             sys.exit()
-        
+
         if self.version == "latest":
             print("Version not mentioned. Downloading latest version")
         self.download_url = self.info['dist']['tarball']
@@ -40,8 +40,9 @@ class NodeClone():
         print("Downloading file ...")
         try:
             subprocess.call(["rm", "-rf", "tmp"])
-            subprocess.call(['mkdir','tmp'])
-            subprocess.call(["wget", self.download_url, "-O", "tmp/{}".format(self.filename)])
+            subprocess.call(['mkdir', 'tmp'])
+            subprocess.call(["wget", self.download_url, "-O",
+                            "tmp/{}".format(self.filename)])
         except Exception as e:
             print(e)
             print("Error: Could not download file")
@@ -51,9 +52,14 @@ class NodeClone():
     def extract_tgz(self):
         print("Extracting file ...")
         try:
-            subprocess.call(["tar", "-xzf", "tmp/{}".format(self.filename), "-C", "tmp"])
+            subprocess.call(
+                ["tar", "-xzf", "tmp/{}".format(self.filename), "-C", "tmp"])
         except Exception as e:
             print(e)
             print("Error: Could not extract file")
             sys.exit()
         print("File Extracted.")
+
+    def extract(self):
+        if self.file_ext == 'tgz':
+            self.extract_tgz()

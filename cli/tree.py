@@ -6,7 +6,7 @@ from typing import AnyStr, List, Pattern
 ignorable_patterns: List[Pattern[str]] = []
 
 
-def matches_regex_patterns(path: str):
+def matches_regex_patterns(path: str) -> bool:
     for regex in ignorable_patterns:
         if regex.search(path):
             return True

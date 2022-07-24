@@ -1,6 +1,8 @@
+import codecs
 import re
-from typing import List, Pattern, Tuple
 import os
+
+from typing import List, Pattern, Tuple
 
 
 def get_common_protected_keywords() -> List[str]:
@@ -16,7 +18,14 @@ class Check_Hardcoded_Secrets:
         self.file_list = file_list
 
     def form_regex(self, quotation: str) -> List[Pattern[str]]:
-        return [re.compile(fr"""\b.*{x}[a-zA-Z\_0-9]*\b\s*=\s*(({quotation})(?:(?=(\\?))\3.)*?\2|([0-9][0-9]*))""", re.IGNORECASE) for x in self.keywords]
+        """
+        TODO:
+        {
+            "password": "SECRET"
+            * END OF STRING DETECTION
+        }
+        """
+        return [re.compile(fr"""\b.*{x}[a-zA-Z\_0-9]*\b\s*={1,3}\s*(({quotation})(?:(?=(\\?))\3.)*?\2|([0-9][0-9]*))\s*""", re.IGNORECASE) for x in self.keywords]
 
     def check_file_for_hardcoded_secrets(self, file_content: List[str], extension: str) -> List[Tuple[int, str]]:
         allowed_without_quotes = False
@@ -43,11 +52,11 @@ class Check_Hardcoded_Secrets:
     def find_hardcoded_secrets(self) -> List[Tuple[str, List[Tuple[int, str]]]]:
         hardcoded_secrets = []
         for file in self.file_list:
-            with open(file) as f:
+            with codecs.open(file, 'r', encoding='utf-8', errors='ignore') as f:
                 result = self.check_file_for_hardcoded_secrets(
                     [x.rstrip() for x in f.readlines()], file.split('.')[-1])
 
-                if not result:
+                if result:
                     hardcoded_secrets.append((file, result))
 
         return hardcoded_secrets
