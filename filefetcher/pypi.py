@@ -58,7 +58,7 @@ class PypiClone():
 
         print(f"Found downlaod link : {self.download_url}")
 
-    def dowload_file(self):
+    def download_file(self):
         print("Downloading file...")
         try:
             subprocess.call(["rm", "-rf", "tmp"])

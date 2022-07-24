@@ -44,7 +44,7 @@ def cli():
             url = input("Enter the pypi module name : ")
             Pypi_Code = PypiClone(url)
             Pypi_Code.gather_info()
-            Pypi_Code.dowload_file()
+            Pypi_Code.download_file()
             print(Pypi_Code.file_ext,Pypi_Code.file_ext=="tar.gz")
             if Pypi_Code.file_ext == "tar.gz":
                 Pypi_Code.extract_tar_gz()
