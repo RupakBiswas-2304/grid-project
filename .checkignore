@@ -1,0 +1,11 @@
+\.git/
+node_modules/
+.*\.css
+.*\.scss
+.*\.exe
+.*\.png
+.*\.jpg
+.*\.gif
+.*\.svg
+.*\.ico
+\.vscode/

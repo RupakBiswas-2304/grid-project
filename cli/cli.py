@@ -3,20 +3,27 @@ from filefetcher.pypi import PypiClone
 from filefetcher.node import NodeClone
 from filefetcher.local import LocalClone
 from vulncheck.dependency_check import main as main1
+from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.injection_check import main as main2
-from .tree import list_files
+from .tree import flatten_tree
+
 
 class Code():
-    def __init__(self, source,type):
+    def __init__(self, source, type: str):
         self.source = source
-        self.tree = list_files('tmp')
+        self.tree = flatten_tree('tmp')
         self.type = type
 
     def dependency_check(self):
         main1.main(self)
-        
+
     def injection_check(self):
         main2.main(self)
+
+    def hardcoded_secret_check(self):
+        checker = Check_Hardcoded_Secrets(self.tree)
+        print(checker.find_hardcoded_secrets())
+
 
 def cli():
     print("Welcome to the file download utility!")
@@ -28,9 +35,10 @@ def cli():
         elif command == "1":
             url = input("Enter the github url: ")
             Github_Code = GithubClone(url)
-            Github_Code.download_repo()
-            code = Code(Github_Code,"github")
+            # Github_Code.download_repo()
+            code = Code(Github_Code, "github")
             code.dependency_check()
+            code.hardcoded_secret_check()
 
         elif command == "2":
             url = input("Enter the node module name : ")
@@ -45,7 +53,7 @@ def cli():
             Pypi_Code = PypiClone(url)
             Pypi_Code.gather_info()
             Pypi_Code.download_file()
-            print(Pypi_Code.file_ext,Pypi_Code.file_ext=="tar.gz")
+            print(Pypi_Code.file_ext, Pypi_Code.file_ext == "tar.gz")
             if Pypi_Code.file_ext == "tar.gz":
                 Pypi_Code.extract_tar_gz()
             elif Pypi_Code.file_ext == "whl":
@@ -53,13 +61,14 @@ def cli():
             elif Pypi_Code.file_ext == "zip":
                 Pypi_Code.extract_zip()
 
-            code = Code(Pypi_Code,"pypi")
+            code = Code(Pypi_Code, "pypi")
         elif command == "4":
             url = input("Enter the local repo path : ")
             LocalClone_Code = LocalClone(url)
             LocalClone_Code.clone_repo()
-            code = Code(LocalClone_Code,"github")
-            code.dependency_check()            
+            code = Code(LocalClone_Code, "github")
+            code.dependency_check()
+            code.hardcoded_secret_check()
         else:
             print("Not implemented yet")
         return
