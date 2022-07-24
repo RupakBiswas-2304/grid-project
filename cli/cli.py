@@ -1,12 +1,15 @@
 from filefetcher.github import GithubClone
 from filefetcher.pypi import PypiClone
 from filefetcher.node import NodeClone
+from filefetcher.local import LocalClone
 from vulncheck.dependency_check import main as main1
+from .tree import list_files
 
 class Code():
-    def __init__(self, source):
+    def __init__(self, source,type):
         self.source = source
-
+        self.tree = list_files('tmp')
+        self.type = type
     def dependency_check(self):
         main1.main(self)
 
@@ -21,6 +24,8 @@ def cli():
             url = input("Enter the github url: ")
             Github_Code = GithubClone(url)
             Github_Code.download_repo()
+            code = Code(Github_Code,"github")
+            code.dependency_check()
 
         elif command == "2":
             url = input("Enter the node module name : ")
@@ -40,8 +45,16 @@ def cli():
                 Pypi_Code.extract_tar_gz()
             elif Pypi_Code.file_ext == "whl":
                 Pypi_Code.extract_whl()
+            elif Pypi_Code.file_ext == "zip":
+                Pypi_Code.extract_zip()
 
-            code = Code(Pypi_Code)
-            
+            code = Code(Pypi_Code,"pypi")
+        elif command == "4":
+            url = input("Enter the local repo path : ")
+            LocalClone_Code = LocalClone(url)
+            LocalClone_Code.clone_repo()
+            code = Code(LocalClone_Code,"github")
+            code.dependency_check()            
         else:
             print("Not implemented yet")
+        return

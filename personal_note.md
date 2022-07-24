@@ -1,0 +1,41 @@
+## Module information
+- #### python [1]
+  - requirements.txt
+  - pipfile.lock
+  - pipfile
+- #### Node [1]
+  - package.json
+  - package-lock.json
+- #### GO [0]
+    - go.mod
+    - go.sum
+- #### Java [0]
+    - pom.xml
+    - maven.xml
+- #### C# [0]
+    - csproj
+    - csproj.user
+    - csproj.debug
+- #### PHP [0]
+    - composer.json
+    - composer.lock
+    - composer.phar
+- #### Ruby [0]
+    - Gemfile
+    - Gemfile.lock
+    - Gemfile.lock.gems
+- #### Swift [0]
+    - Package.swift
+    - Package.swift.lock
+- #### Elixir [0]
+    - mix.exs
+    - mix.lock
+- #### Dart [0]
+    - pubspec.yaml
+    - pubspec.lock
+- #### Kotlin [0]
+    - kotlin.gradle
+    - kotlin.gradle.user
+    - kotlin.gradle.debug
+
+`created by co-pilot`
