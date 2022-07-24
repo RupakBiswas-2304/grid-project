@@ -33,6 +33,7 @@ def check_requirements(code):
     for file in all_files:
         if re.search(pattern, file):
             requiremets.extend(requirment_reader(file))
+    requiremets = list(set(requiremets))
     print(f"Found {len(requiremets)} python requirements.")
     CVES = []
     for module in requiremets:

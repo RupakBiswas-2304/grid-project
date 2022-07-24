@@ -3,6 +3,7 @@ from filefetcher.pypi import PypiClone
 from filefetcher.node import NodeClone
 from filefetcher.local import LocalClone
 from vulncheck.dependency_check import main as main1
+from vulncheck.injection_check import main as main2
 from .tree import list_files
 
 class Code():
@@ -10,8 +11,12 @@ class Code():
         self.source = source
         self.tree = list_files('tmp')
         self.type = type
+
     def dependency_check(self):
         main1.main(self)
+        
+    def injection_check(self):
+        main2.main(self)
 
 def cli():
     print("Welcome to the file download utility!")
