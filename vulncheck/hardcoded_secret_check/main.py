@@ -13,19 +13,19 @@ def get_common_protected_keywords() -> List[str]:
 class Check_Hardcoded_Secrets:
     def __init__(self, file_list: List[str]):
         self.keywords = get_common_protected_keywords()
-        self.keyword_pattern_with_quotes = self.form_regex("[\"'`]")
+        self.keyword_pattern_with_quotes = self.form_regex("""["'`]""")
         self.keyword_pattern_without_quotes = self.form_regex("")
         self.file_list = file_list
 
     def form_regex(self, quotation: str) -> List[Pattern[str]]:
         """
         TODO:
-        {
-            "password": "SECRET"
-            * END OF STRING DETECTION
-        }
+            {
+                "password": "SECRET"
+                * END OF STRING DETECTION
+            }
         """
-        return [re.compile(fr"""\b.*{x}[a-zA-Z\_0-9]*\b\s*={1,3}\s*(({quotation})(?:(?=(\\?))\3.)*?\2|([0-9][0-9]*))\s*""", re.IGNORECASE) for x in self.keywords]
+        return [re.compile(r"""\b.*{x}[a-zA-Z\_0-9]*\b\s*={{1,3}}\s*(({quotation})(?:(?=(\\?))\3.)*?\2|([0-9][0-9]*))""".format(x=x, quotation=quotation), re.IGNORECASE) for x in self.keywords]
 
     def check_file_for_hardcoded_secrets(self, file_content: List[str], extension: str) -> List[Tuple[int, str]]:
         allowed_without_quotes = False
@@ -38,13 +38,13 @@ class Check_Hardcoded_Secrets:
             found = False
             for pattern in self.keyword_pattern_with_quotes:
                 if pattern.search(line):
-                    hardcoded_secrets.append((idx, line))
+                    hardcoded_secrets.append((idx, line.strip()))
                     found = True
                     break
             if allowed_without_quotes and not found:
                 for pattern in self.keyword_pattern_without_quotes:
                     if pattern.search(line):
-                        hardcoded_secrets.append((idx, line))
+                        hardcoded_secrets.append((idx, line.strip()))
                         break
 
         return hardcoded_secrets

@@ -1,6 +1,7 @@
 import requests
 import re
 
+
 def check_pypi_CVE(module):
     version = None
     if ("==" in module):
@@ -20,11 +21,13 @@ def check_pypi_CVE(module):
     existing_vuln = info['vulnerabilities']
     return existing_vuln
 
+
 def requirment_reader(filepath):
     with open(filepath) as f:
         content = f.readlines()
     content = [x.strip() for x in content]
     return content
+
 
 def check_requirements(code):
     all_files = code.tree
@@ -36,10 +39,13 @@ def check_requirements(code):
     requiremets = list(set(requiremets))
     print(f"Found {len(requiremets)} python requirements.")
     CVES = []
-    for module in requiremets:
+    for idx, module in enumerate(requiremets):
+        print(f"module {idx + 1} / {len(requiremets)}")
         CVES.extend(check_pypi_CVE(module))
     print(f"found {len(CVES)} CVEs in python requirements.")
     return CVES
+
+
 # format of exsisting_vuln:
 '''
 [
