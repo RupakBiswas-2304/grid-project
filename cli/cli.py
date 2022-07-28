@@ -45,7 +45,7 @@ def cli():
             Github_Code.download_repo()
             code = Code(Github_Code, "github")
             code.dependency_check()
-            #code.hardcoded_secret_check()
+            code.hardcoded_secret_check()
             code.php_vuln_check()
 
         elif command == "2":
