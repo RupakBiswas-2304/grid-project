@@ -3,3 +3,4 @@ charset-normalizer==2.1.0
 idna==3.3
 requests==2.28.1
 urllib3==1.26.10
+colorama

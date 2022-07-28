@@ -5,6 +5,9 @@ from filefetcher.local import LocalClone
 from vulncheck.dependency_check import main as main1
 from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.injection_check import main as main2
+from vulncheck.php_vuln_check.main import task
+from vulncheck.php_vuln_check.phpvuln import main as m
+import vulncheck.php_vuln_check
 from .tree import flatten_tree
 
 
@@ -24,6 +27,10 @@ class Code():
         checker = Check_Hardcoded_Secrets(self.tree)
         print(checker.find_hardcoded_secrets())
 
+    def php_vuln_check(self):
+        task()
+        m()
+
 
 def cli():
     print("Welcome to the file download utility!")
@@ -38,7 +45,8 @@ def cli():
             Github_Code.download_repo()
             code = Code(Github_Code, "github")
             code.dependency_check()
-            code.hardcoded_secret_check()
+            #code.hardcoded_secret_check()
+            code.php_vuln_check()
 
         elif command == "2":
             url = input("Enter the node module name : ")
