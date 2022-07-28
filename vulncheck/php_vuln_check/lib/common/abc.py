@@ -94,7 +94,8 @@ class Vulnerability(ABC):
         vulns = []
 
         for i, line in enumerate(self.get_lines()):
-            match = re.search(f'({regex})', line, re.IGNORECASE if ignore_case else 0)
+            match = re.search(f'({regex})', line,
+                              re.IGNORECASE if ignore_case else 0)
 
             if match:
                 vulns.append((self.__remove_indent(line), i, match.group(1)))

@@ -25,7 +25,7 @@ class Code():
 
     def hardcoded_secret_check(self):
         checker = Check_Hardcoded_Secrets(self.tree)
-        print(checker.find_hardcoded_secrets())
+        checker.find_and_print_hardcoded_secrets()
 
     def php_vuln_check(self):
         task()
