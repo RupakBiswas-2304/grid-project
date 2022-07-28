@@ -22,7 +22,7 @@ def check_node_cve(code):
     
     for file in package_lock:
         f = open(file, "r")
-        data = json.load(f)
+        data = load(f)
         payload = json.dumps({
         "name":"test",
         "version":"0.0.1",
