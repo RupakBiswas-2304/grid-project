@@ -1,7 +1,7 @@
 # function for listing all the files in tmp folder
 import os
 import re
-from typing import AnyStr, List, Pattern
+from typing import List, Pattern
 
 ignorable_patterns: List[Pattern[str]] = []
 

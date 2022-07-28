@@ -1,5 +1,6 @@
-from .pypi_cve import check_pypi_CVE,requirment_reader,check_requirements
+from .pypi_cve import check_pypi_CVE, check_requirements
 from .node_cve import check_node_cve
+
 
 def main(code):
     if code.type == "pypi":
@@ -22,17 +23,14 @@ def main(code):
         try:
             pypi_cve = check_requirements(code)
         except Exception as e:
-            print (e)
+            print(e)
 
-        #check for package-lock.json and find cve
+        # check for package-lock.json and find CVEs
         try:
             node_cve = check_node_cve(code)
         except Exception as e:
-            print (e)
-        
-        CVEs = pypi_cve 
+            print(e)
 
-        # print(len(CVEs))
-        # for cve in CVEs:
-        #     print(cve["aliases"])
+        CVEs = pypi_cve
+
         return CVEs

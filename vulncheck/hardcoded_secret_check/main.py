@@ -21,11 +21,10 @@ class Check_Hardcoded_Secrets:
         """
         TODO:
             {
-                "password": "SECRET"
                 * END OF STRING DETECTION
             }
         """
-        return [re.compile(r"""\b.*{x}[a-zA-Z\_0-9]*\b\s*={{1,3}}\s*(({quotation})(?:(?=(\\?))\3.)*?\2|([0-9][0-9]*))""".format(x=x, quotation=quotation), re.IGNORECASE) for x in self.keywords]
+        return [re.compile(r"""("|'|`|\b)[a-zA-Z\_]*{x}[a-zA-Z\_0-9]*\1\s*(={{1,3}}|:|:=)\s*(({quotation})(?:(?=(\\?))\5.)*?\4|([0-9][0-9]*))""".format(x=x, quotation=quotation), re.IGNORECASE) for x in self.keywords]
 
     def check_file_for_hardcoded_secrets(self, file_content: List[str], extension: str) -> List[Tuple[int, str]]:
         allowed_without_quotes = False
