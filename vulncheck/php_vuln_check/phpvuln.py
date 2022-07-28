@@ -35,6 +35,8 @@ def main():
     parser.add_argument('-v', '--vulns', help='common vulnerabilities to look for. Default: all', dest='included', metavar='', default=','.join(x[1] for x in vulns_list))
     parser.add_argument('--exclude', help='exclude common vulnerabilities', dest='excluded', metavar='')
 
+    args = parser.parse_args()
+
 
     args.path = 'tmp'
 
