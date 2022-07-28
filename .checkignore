@@ -1,8 +1,7 @@
 \.git/
 node_modules/
 __pycache__/
-.*\.css
-.*\.scss
+.*\.pdf
 .*\.exe
 .*\.png
 .*\.jpg

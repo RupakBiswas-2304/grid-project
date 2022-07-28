@@ -1,8 +1,12 @@
+from typing import List
 import requests
 import re
 
 
-def check_pypi_CVE(module):
+session = requests.Session()
+
+
+def check_pypi_CVE(module, CVEs: List):
     version = None
     if ("==" in module):
         version = module.split("==")[1]
@@ -15,14 +19,15 @@ def check_pypi_CVE(module):
     if version != None:
         url = f"https://pypi.org/pypi/{module}/{version}/json"
 
-    response = requests.get(url)
+    print(f"starting: {module}")
+    response = session.get(url)
+    print(f"done: {module}")
     response.raise_for_status()
     info = response.json()
-    existing_vuln = info['vulnerabilities']
-    return existing_vuln
+    CVEs.extend(info['vulnerabilities'])
 
 
-def requirment_reader(filepath):
+def requirement_reader(filepath):
     with open(filepath) as f:
         content = f.readlines()
     content = [x.strip() for x in content]
@@ -32,18 +37,19 @@ def requirment_reader(filepath):
 def check_requirements(code):
     all_files = code.tree
     pattern = "(req)[a-z]*\.txt"
-    requiremets = []
+    requirements = []
     for file in all_files:
         if re.search(pattern, file):
-            requiremets.extend(requirment_reader(file))
-    requiremets = list(set(requiremets))
-    print(f"Found {len(requiremets)} python requirements.")
-    CVES = []
-    for idx, module in enumerate(requiremets):
-        print(f"module {idx + 1} / {len(requiremets)}")
-        CVES.extend(check_pypi_CVE(module))
-    print(f"found {len(CVES)} CVEs in python requirements.")
-    return CVES
+            requirements.extend(requirement_reader(file))
+    requirements = list(set(requirements))
+    print(f"Found {len(requirements)} python requirements.")
+    CVEs = []
+
+    for module in requirements:
+        check_pypi_CVE(module, CVEs)
+
+    print(f"found {len(CVEs)} CVEs in python requirements.")
+    return CVEs
 
 
 # format of exsisting_vuln:

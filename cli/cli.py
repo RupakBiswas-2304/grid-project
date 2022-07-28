@@ -5,9 +5,7 @@ from filefetcher.local import LocalClone
 from vulncheck.dependency_check import main as main1
 from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.injection_check import main as main2
-from vulncheck.php_vuln_check.main import task
 from vulncheck.php_vuln_check.phpvuln import main as m
-import vulncheck.php_vuln_check
 from .tree import flatten_tree
 
 
@@ -25,10 +23,9 @@ class Code():
 
     def hardcoded_secret_check(self):
         checker = Check_Hardcoded_Secrets(self.tree)
-        print(checker.find_hardcoded_secrets())
+        checker.find_and_print_hardcoded_secrets()
 
     def php_vuln_check(self):
-        task()
         m()
 
 
@@ -39,6 +36,7 @@ def cli():
         command = input("> ")
         if command == "exit" or command == "Exit":
             return
+
         elif command == "1":
             url = input("Enter the github url: ")
             Github_Code = GithubClone(url)
@@ -49,7 +47,7 @@ def cli():
             code.php_vuln_check()
 
         elif command == "2":
-            url = input("Enter the node module name : ")
+            url = input("Enter the Node module name : ")
             Node_Code = NodeClone(url)
             Node_Code.gather_info()
             Node_Code.download_file()
@@ -63,6 +61,7 @@ def cli():
             print(Pypi_Code.file_ext, Pypi_Code.file_ext == "tar.gz")
             Pypi_Code.extract()
             code = Code(Pypi_Code, "pypi")
+
         elif command == "4":
             url = input("Enter the local repo path : ")
             LocalClone_Code = LocalClone(url)
@@ -70,6 +69,6 @@ def cli():
             code = Code(LocalClone_Code, "github")
             code.dependency_check()
             code.hardcoded_secret_check()
+
         else:
             print("Not implemented yet")
-        return

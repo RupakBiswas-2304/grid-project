@@ -2,6 +2,7 @@ import requests
 import re
 import json
 
+
 def check_node_cve(code):
     all_files = code.tree
     pattern = "(package-lock.json)"
@@ -13,35 +14,45 @@ def check_node_cve(code):
     url = "https://registry.npmjs.org/-/npm/v1/security/audits"
 
     vul = {
-        "info":0,
-        "low":0,
-        "moderate":0,
-        "high":0,
-        "critical":0
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0
     }
-    
+
     for file in package_lock:
         f = open(file, "r")
         data = load(f)
         payload = json.dumps({
-        "name":"test",
-        "version":"0.0.1",
-        "requires":data['packages']['']['dependencies'],
-        "dependencies":data['dependencies']
+            "name": "test",
+            "version": "0.0.1",
+            "requires": data['packages']['']['dependencies'],
+            "dependencies": data['dependencies']
         })
         headers = {
-          'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
         }
         response = requests.request("POST", url, headers=headers, data=payload)
         result = json.loads(response.text)
-        vul["info"] = vul["info"] + result['metadata']['vulnerabilities']['info']
+        vul["info"] = vul["info"] + \
+            result['metadata']['vulnerabilities']['info']
         vul["low"] = vul["low"] + result['metadata']['vulnerabilities']['low']
-        vul["moderate"] = vul["moderate"] + result['metadata']['vulnerabilities']['moderate']
-        vul["high"] = vul["high"] + result['metadata']['vulnerabilities']['high']
-        vul["critical"] = vul["critical"] + result['metadata']['vulnerabilities']['critical']
-    
-    total_vuln = vul["info"] + vul["low"] + vul["moderate"] + vul["high"] + vul["critical"]
+        vul["moderate"] = vul["moderate"] + \
+            result['metadata']['vulnerabilities']['moderate']
+        vul["high"] = vul["high"] + \
+            result['metadata']['vulnerabilities']['high']
+        vul["critical"] = vul["critical"] + \
+            result['metadata']['vulnerabilities']['critical']
 
-    print(f"Found {total_vuln} vulnerabilities in package-lock.json")
-    print(f"info: {vul['info']} \nlow: {vul['low']} \nmoderate: {vul['moderate']} \nhigh: {vul['high']} \ncritical: {vul['critical']}")
+    total_vuln = vul["info"] + vul["low"] + \
+        vul["moderate"] + vul["high"] + vul["critical"]
+
+    if len(total_vuln) != 0:
+        print(f"Found {total_vuln} vulnerabilities in package-lock.json")
+        print(
+            f"info: {vul['info']} \nlow: {vul['low']} \nmoderate: {vul['moderate']} \nhigh: {vul['high']} \ncritical: {vul['critical']}")
+    else:
+        print('Could not find any package-lock.json file!')
+
     return vul
