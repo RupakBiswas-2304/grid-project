@@ -5,9 +5,7 @@ from filefetcher.local import LocalClone
 from vulncheck.dependency_check import main as main1
 from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.injection_check import main as main2
-from vulncheck.php_vuln_check.main import task
 from vulncheck.php_vuln_check.phpvuln import main as m
-import vulncheck.php_vuln_check
 from .tree import flatten_tree
 
 
@@ -28,7 +26,6 @@ class Code():
         checker.find_and_print_hardcoded_secrets()
 
     def php_vuln_check(self):
-        task()
         m()
 
 

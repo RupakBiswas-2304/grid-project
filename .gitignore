@@ -4,4 +4,4 @@ __pycache__/
 .vscode/
 loading.py
 temp.py
-test.in
+test.*

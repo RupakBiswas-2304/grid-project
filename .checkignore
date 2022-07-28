@@ -1,6 +1,7 @@
 \.git/
 node_modules/
 __pycache__/
+.*\.pdf
 .*\.exe
 .*\.png
 .*\.jpg
