@@ -2,6 +2,8 @@ import requests
 import re
 import json
 
+from colorama import Fore, Back
+
 
 def check_node_cve(code):
     all_files = code.tree
@@ -48,11 +50,11 @@ def check_node_cve(code):
     total_vuln = vul["info"] + vul["low"] + \
         vul["moderate"] + vul["high"] + vul["critical"]
 
-    if len(total_vuln) != 0:
+    if total_vuln != 0:
         print(f"Found {total_vuln} vulnerabilities in package-lock.json")
         print(
             f"info: {vul['info']} \nlow: {vul['low']} \nmoderate: {vul['moderate']} \nhigh: {vul['high']} \ncritical: {vul['critical']}")
     else:
-        print('Could not find any package-lock.json file!')
+        print(f'{Fore.RED}Could not find any package-lock.json file!{Fore.RESET}')
 
     return vul
