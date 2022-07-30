@@ -5,6 +5,7 @@ def main(code):
         all_files = code.tree
         for files in all_files:
             if files.endswith(".py"):
+                print("[+] Checking for static vulnerabilities in {}".format(files))    
                 static_check(files)
 
 

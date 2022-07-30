@@ -30,7 +30,7 @@ class Code():
         m()
 
     def code_check(self):
-        main4.main(self)
+        main4(self)
 
 def cli():
     print("Welcome to the file download utility!")
@@ -82,5 +82,14 @@ def cli():
             code.hardcoded_secret_check()
             code.php_vuln_check()
             code.code_check()
+
+        elif command == "5":
+            LocalClone_Code = LocalClone('tmp')
+            code = Code(LocalClone_Code, "github")
+            code.dependency_check()
+            code.hardcoded_secret_check()
+            code.php_vuln_check()
+            code.code_check()
+
         else:
             print("Not implemented yet")
