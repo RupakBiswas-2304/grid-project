@@ -6,6 +6,7 @@ from vulncheck.dependency_check import main as main1
 from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.injection_check import main as main2
 from vulncheck.php_vuln_check.phpvuln import main as m
+from vulncheck.code_check.main import main as main4
 from .tree import flatten_tree
 
 
@@ -28,6 +29,8 @@ class Code():
     def php_vuln_check(self):
         m()
 
+    def code_check(self):
+        main4.main(self)
 
 def cli():
     print("Welcome to the file download utility!")
@@ -45,6 +48,7 @@ def cli():
             code.dependency_check()
             code.hardcoded_secret_check()
             code.php_vuln_check()
+            code.code_check()
 
         elif command == "2":
             url = input("Enter the Node module name : ")
@@ -52,6 +56,11 @@ def cli():
             Node_Code.gather_info()
             Node_Code.download_file()
             Node_Code.extract()
+            code = Code(Node_Code, "node")
+            code.dependency_check()
+            code.hardcoded_secret_check()
+
+            
 
         elif command == "3":
             url = input("Enter the pypi module name : ")
@@ -61,6 +70,8 @@ def cli():
             print(Pypi_Code.file_ext, Pypi_Code.file_ext == "tar.gz")
             Pypi_Code.extract()
             code = Code(Pypi_Code, "pypi")
+            code.dependency_check()
+            code.hardcoded_secret_check()
 
         elif command == "4":
             url = input("Enter the local repo path : ")
@@ -69,6 +80,7 @@ def cli():
             code = Code(LocalClone_Code, "github")
             code.dependency_check()
             code.hardcoded_secret_check()
-
+            code.php_vuln_check()
+            code.code_check()
         else:
             print("Not implemented yet")
