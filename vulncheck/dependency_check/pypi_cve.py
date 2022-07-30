@@ -2,6 +2,8 @@ from typing import List
 import requests
 import re
 
+import cli.loader as loader
+
 
 session = requests.Session()
 
@@ -19,9 +21,7 @@ def check_pypi_CVE(module, CVEs: List):
     if version != None:
         url = f"https://pypi.org/pypi/{module}/{version}/json"
 
-    print(f"starting: {module}")
     response = session.get(url)
-    print(f"done: {module}")
     response.raise_for_status()
     info = response.json()
     CVEs.extend(info['vulnerabilities'])
@@ -45,8 +45,12 @@ def check_requirements(code):
     print(f"Found {len(requirements)} python requirements.")
     CVEs = []
 
-    for module in requirements:
+    for idx, module in enumerate(requirements):
+        loader.progress(idx, len(requirements),
+                        status=f"{module.split('==' if '==' in module else ':')[0]}")
         check_pypi_CVE(module, CVEs)
+
+    loader.reset()
 
     print(f"found {len(CVEs)} CVEs in python requirements.")
     return CVEs
