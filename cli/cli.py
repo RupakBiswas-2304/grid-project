@@ -32,6 +32,7 @@ class Code():
     def code_check(self):
         main4(self)
 
+
 def cli():
     print("Welcome to the file download utility!")
     while(True):
@@ -60,8 +61,6 @@ def cli():
             code.dependency_check()
             code.hardcoded_secret_check()
 
-            
-
         elif command == "3":
             url = input("Enter the pypi module name : ")
             Pypi_Code = PypiClone(url)
@@ -88,7 +87,7 @@ def cli():
             code = Code(LocalClone_Code, "github")
             code.dependency_check()
             code.hardcoded_secret_check()
-            code.php_vuln_check()
+            # code.php_vuln_check()
             code.code_check()
 
         else:

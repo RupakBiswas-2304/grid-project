@@ -1,0 +1,11 @@
+return\s*.*
+execute\(.*\)
+executemany\(.*\)
+exec\(.*\)
+print\(.*\)
+sys.std(out|err).write\(.*\)
+write\(.*\)
+res.send\(.*\)
+Response\(.*\)
+res.json\(.*\)
+res.sendFile\(.*\)
