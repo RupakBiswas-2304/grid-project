@@ -33,12 +33,11 @@ class Code():
         checker = Check_Hardcoded_Secrets(self.tree)
         return checker.find_and_print_hardcoded_secrets()
 
-    def php_vuln_check(self,filepath):
-        m(self.tree,filepath)
+    def php_vuln_check(self, filepath):
+        m(self.tree, filepath)
 
     def code_check(self):
         return main4(self)
-
 
     def initiate_analysis(self):
         report = Report(self.source.url)
@@ -49,13 +48,14 @@ class Code():
         secrets = self.hardcoded_secret_check()
         report.hardcoded_secrets(secrets)
 
-        # self.code_check()
-        report.code_check(self.code_check())
+        static_analysis = self.code_check()
+        report.code_check(static_analysis)
+
         self.php_vuln_check(report.filename)
 
 
 def cli():
-    print('Welcome to the file download utility!')
+    print('Welcome to Code Analyser!')
     while(True):
         print(Menu)
         command = input('$> ')

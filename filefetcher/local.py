@@ -8,6 +8,7 @@ TYPE = 'LOCAL'
 
 class LocalClone(BaseClone):
     def __init__(self, url: str, branch: str | None):
+        self.type = "github"
         self.url = url
         super().__init__(url, branch)
 

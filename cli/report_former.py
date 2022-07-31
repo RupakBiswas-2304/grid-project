@@ -54,9 +54,10 @@ class Report:
         """
 
         for cve in node["CVEs"]:
-            content_npm += f"""
+            if cve["cves"]:
+                content_npm += f"""
 -   `{cve["cves"][0] if cve["cves"] else "NO CVE SPECIFIED"}` : {cve["title"]} [**{cve["module_name"]}**], with Severity of `{cve["severity"]}`
-            """
+                """
 
         self.write(content_py)
         self.write(content_npm)
@@ -77,3 +78,17 @@ class Report:
                 """
 
         self.write(content)
+
+    def code_check(self, static_analysis: List[str]):
+        self.write('''
+# Python Static Code Scan Report
+
+### Vulnerabilities :
+
+        ''')
+        for line in static_analysis:
+            self.write(f'''
+```py
+{line}
+```
+        ''')
