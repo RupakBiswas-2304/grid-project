@@ -28,7 +28,7 @@ def form_sink_pattern() -> Pattern[str]:
             pattern += fr"{p.strip()}|"
     pattern += r')'
 
-    print(f"Final pattern: {re.compile(pattern)}")
+    # print(f"Final pattern: {re.compile(pattern)}")
 
     return re.compile(pattern)
 
@@ -137,9 +137,10 @@ def regex_filter(s: str) -> str:
 
 
 def analyze_line(s: str, output: List, index: int, source: dict, sink: list, vulns: list, source_list: set):
+    global TAB_SIZE
+    global SUS_FUNCTIONS
     for index in range(len(s)):
-        global TAB_SIZE
-        global SUS_FUNCTIONS
+        # print(index)    
         '''
         s = whole code base
         index = current index
@@ -195,10 +196,13 @@ def analyze_line(s: str, output: List, index: int, source: dict, sink: list, vul
             if t > 0:
                 if TAB_SIZE is None:
                     TAB_SIZE = t
-                data["in"] = output[-1]["in"].copy()
-                while (len(data["in"]) > t//TAB_SIZE):
-                    data["in"].pop()
-                data["in"].append(["def", data['name']])
+                try:
+                    data["in"] = output[-1]["in"].copy()
+                    while (len(data["in"]) > t//TAB_SIZE):
+                        data["in"].pop()
+                    data["in"].append(["def", data['name']])
+                except:
+                    data["in"] = []
             output.append(data)
 
         elif s[index].startswith("@"):
@@ -282,10 +286,13 @@ def analyze_line(s: str, output: List, index: int, source: dict, sink: list, vul
             }
             t = gettabs(s[index])
             if t != 0:
-                data["in"] = output[-1]["in"].copy()
-                while (len(data["in"]) > t//TAB_SIZE):
-                    data["in"].pop()
-
+                try:
+                    # print(output[-1])
+                    data["in"] = output[-1]["in"].copy()
+                    while (len(data["in"]) > t//TAB_SIZE):
+                        data["in"].pop()
+                except:
+                    data["in"] = []                    
             # scope = output[-1].copy()
             # print("🚩",data["in"])
             k = len(output)-1
@@ -319,7 +326,7 @@ def analyze_line(s: str, output: List, index: int, source: dict, sink: list, vul
             output.append(data)
             sink.append(index)
 
-    print(output, vulns, source, sink, source_list)
+    # print(output, vulns, source, sink, source_list)
     return output, vulns, source, sink, source_list
     # return analyze_line(s, output, index+1, source, sink, vulns, source_list)
 
@@ -332,6 +339,7 @@ def main(path):
     data, vulns, source, sink, source_list = analyze_line(
         lines, [], 0, {}, [], [], x)
     # print(source,sink,source_list)
+    list(set(vulns))
     for v in vulns:
         print(v)
 
