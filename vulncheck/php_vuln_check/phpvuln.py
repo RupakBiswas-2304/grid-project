@@ -13,8 +13,14 @@ from vulncheck.php_vuln_check.lib.core import log
 found = 0
 
 
-def main(tree: List[str]):
+def main(tree: List[str],filepath : str):
+    content = f'''
+# PHP scan
 
+### Vulnerabilities :
+    '''
+    with open(filepath, 'a') as f:
+        f.write(content)
     xss = 0
     sqli = 0
     rfi = 0
@@ -59,6 +65,9 @@ def main(tree: List[str]):
                             line = line[:-1]
                         log.found(file_path, line, no,
                                   vuln_part, vuln_obj.name)
+                        log.report_found(file_path, line, no,
+                                  vuln_part, vuln_obj.name,filepath)
+                                    
                         if vuln_obj.name == "CROSS-SITE SCRIPTING (XSS)":
                             xss += 1
                         if vuln_obj.name == "SQL INJECTION":
