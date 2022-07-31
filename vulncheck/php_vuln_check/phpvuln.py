@@ -26,41 +26,10 @@ def main():
     vuln_classes = utils.get_vulnerability_classes()
     vulns_list = [(_class.name, _class.keyname) for _class in vuln_classes]
 
-    parser = argparse.ArgumentParser(usage='%(prog)s [options]')
+    vulns_ = ','.join(x[1] for x in vulns_list)
+    
 
-    parser.error = log.error
-
-    parser.add_argument(
-        '-p', '--path', help='php project path', dest='path', metavar='')
-    parser.add_argument('-v', '--vulns', help='common vulnerabilities to look for. Default: all',
-                        dest='included', metavar='', default=','.join(x[1] for x in vulns_list))
-    parser.add_argument(
-        '--exclude', help='exclude common vulnerabilities', dest='excluded', metavar='')
-
-    args = parser.parse_args()
-
-    args.path = '../../tmp'
-
-    if not args.path and not args.file:
-        log.error('missing mandatory option: -p/--path or -f/--file')
-
-    if args.path:
-        args.file = None
-
-        if not os.path.exists(args.path) or not os.path.isdir(args.path):
-            log.error('directory not found')
-    else:
-        if not os.path.exists(args.file) or not os.path.isfile(args.file) or not args.file.endswith('.php') and not args.file.endswith('.html'):
-            log.error('php file not found')
-
-    included_vulns = args.included.lower().split(',')
-    excluded_vulns = args.excluded.lower().split(',') if args.excluded else []
-
-    for vuln in excluded_vulns:
-        if not [_class for _class in vuln_classes if _class.keyname == vuln]:
-            log.error(f'unrecognized common vulnerability: {vuln}')
-            exit(0)
-        included_vulns.remove(vuln)
+    included_vulns = vulns_.split(',')
 
     for vuln in included_vulns:
         if not [_class for _class in vuln_classes if _class.keyname == vuln]:
@@ -69,10 +38,10 @@ def main():
 
     global found
 
-    args.path = 'tmp'
-
-    if args.path:
-        for root, _, directory in os.walk(args.path):
+    path = 'tmp'
+    found = 0
+    if path:
+        for root, _, directory in os.walk(path):
             for file in directory:
                 if not file.endswith('.php') and not file.endswith('.html'):
                     continue
@@ -105,33 +74,7 @@ def main():
                         if vuln_obj.name == "COMMAND INJECTION":
                             cmdi += 1
                         found += 1
-    else:
-        for vuln in included_vulns:
-            Vulnerability = [
-                _class for _class in vuln_classes if _class.keyname == vuln][0]
-
-            vuln_obj = Vulnerability(args.file)
-
-            for line, no, vuln_part in vuln_obj.find():
-                while line.endswith(' '):
-                    line = line[:-1]
-                log.found(args.file, line, no, vuln_part, vuln_obj.name)
-                if vuln_obj.name == "CROSS-SITE SCRIPTING (XSS)":
-                    xss += 1
-                if vuln_obj.name == "SQL INJECTION":
-                    sqli += 1
-                if vuln_obj.name == "REMOTE FILE INCLUSION":
-                    rfi += 1
-                if vuln_obj.name == "LOCAL FILE INCLUSION":
-                    lfi += 1
-                if vuln_obj.name == "IP EXPOSURE":
-                    ip += 1
-                if vuln_obj.name == "CONFIGURATION CREDENTIALS":
-                    cred += 1
-                if vuln_obj.name == "COMMAND INJECTION":
-                    cmdi += 1
-                found += 1
-
+                        
     if found > 0:
         log.info(
             f'phpvuln finished with {Fore.GREEN}{found} {Fore.RESET}potential vulnerabilit{"y" if found == 1 else "ies"} found')
