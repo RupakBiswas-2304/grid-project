@@ -24,7 +24,7 @@ def check_node_cve(code):
         "high": 0,
         "critical": 0
     }
-
+    result = None
     for file in package_lock:
         f = open(file, "r")
         data = json.load(f)
@@ -59,5 +59,13 @@ def check_node_cve(code):
             f"info: {vul['info']} \nlow: {vul['low']} \nmoderate: {vul['moderate']} \nhigh: {vul['high']} \ncritical: {vul['critical']}")
     else:
         print(f'{Fore.RED}Could not find any package-lock.json file!{Fore.RESET}')
+
+    if result:
+        for i in range(result["advisories"].keys()):
+            print(result["advisories"][i]["module_name"])
+            print(result["advisories"][i]["title"])
+            print(result["advisories"][i]["cves"])
+            print(result["advisories"][i]["severity"])
+
 
     return vul
