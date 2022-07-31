@@ -30,7 +30,10 @@ def main(code):
             node_cve = check_node_cve(code)
         except Exception as e:
             print(e)
+        
+        for n in node_cve:
+            print(n)
 
         CVEs = pypi_cve
 
-        return CVEs
+        return pypi_cve, node_cve
