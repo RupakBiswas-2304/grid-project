@@ -7,7 +7,6 @@ from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.php_vuln_check.phpvuln import main as m
 from vulncheck.code_check.main import main as main4
 from .tree import flatten_tree
-from cli.ascii_art import anya
 import datetime
 
 Menu = '''
@@ -59,11 +58,8 @@ def report_top(url):
 def cli():
     print('Welcome to the file download utility!')
     while(True):
-        print(anya)
         print(Menu)
         command = input('$> ')
-
-        report = open("REPORT.md", "w")
 
         if command.lower() == 'exit':
             return
@@ -91,7 +87,6 @@ def cli():
 
         elif command == "3":
             url = input("Enter the PyPI module name : ")
-            report.write(report_top(url))
             Pypi_Code = PypiClone(url)
             Pypi_Code.gather_info()
             Pypi_Code.download_file()
@@ -105,7 +100,6 @@ def cli():
             if not branch:
                 branch = None
 
-            report.write(report_top(url))
             LocalClone_Code = LocalClone(url, branch)
             LocalClone_Code.clone_repository()
             code = Code(LocalClone_Code, 'github')
