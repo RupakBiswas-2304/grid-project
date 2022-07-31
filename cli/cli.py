@@ -1,3 +1,4 @@
+from cli.report_former import Report
 from filefetcher.github import GithubClone
 from filefetcher.pypi import PypiClone
 from filefetcher.node import NodeClone
@@ -20,17 +21,17 @@ Enter your source:
 
 
 class Code():
-    def __init__(self, source, type: str):
+    def __init__(self, source: GithubClone | NodeClone | LocalClone | PypiClone, type: str):
         self.source = source
         self.tree = flatten_tree('tmp')
         self.type = type
 
     def dependency_check(self):
-        main1.main(self)
+        return main1.main(self)
 
     def hardcoded_secret_check(self):
         checker = Check_Hardcoded_Secrets(self.tree)
-        checker.find_and_print_hardcoded_secrets()
+        return checker.find_and_print_hardcoded_secrets()
 
     def php_vuln_check(self):
         m(self.tree)
@@ -39,20 +40,17 @@ class Code():
         main4(self)
 
     def initiate_analysis(self):
-        self.dependency_check()
-        self.hardcoded_secret_check()
-        self.php_vuln_check()
+        report = Report(self.source.url)
+
+        pypi, node = self.dependency_check()
+        report.dependency(pypi, node)
+
+        secrets = self.hardcoded_secret_check()
+        report.hardcoded_secrets(secrets)
+
         self.code_check()
 
-
-def report_top(url):
-    report_top = f'''
-<h1 align="center"> Code Report for {url} </h1>
-<h4 align="right"> Created By Static Code Analyser 1.0.0 </h4>
-<h4 align="right">{ datetime.datetime.now() }</h4>
-#
-    '''
-    return report_top
+        self.php_vuln_check()
 
 
 def cli():

@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 import requests
 import re
 
@@ -34,7 +34,7 @@ def requirement_reader(filepath):
     return content
 
 
-def check_requirements(code):
+def check_requirements(code) -> Dict:
     all_files = code.tree
     pattern = "(req)[a-z]*\.txt"
     requirements = []
@@ -53,7 +53,7 @@ def check_requirements(code):
     loader.reset()
 
     print(f"found {len(CVEs)} CVEs in python requirements.")
-    return CVEs
+    return {"requirements": requirements, "CVEs": CVEs}
 
 
 # format of exsisting_vuln:

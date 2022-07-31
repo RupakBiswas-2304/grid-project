@@ -53,7 +53,6 @@ def check_node_cve(code):
     total_vuln = vul["info"] + vul["low"] + \
         vul["moderate"] + vul["high"] + vul["critical"]
 
-
     if total_vuln != 0:
         print(f"Found {total_vuln} vulnerabilities in package-lock.json")
         print(

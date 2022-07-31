@@ -57,7 +57,7 @@ class Check_Hardcoded_Secrets:
 
         return hardcoded_secrets
 
-    def find_and_print_hardcoded_secrets(self):
+    def find_and_print_hardcoded_secrets(self) -> List[Tuple[str, List[Tuple[int, str, str]]]]:
         hardcoded_secrets = self.find_hardcoded_secrets()
 
         for file_level_secrets in hardcoded_secrets:
@@ -69,6 +69,8 @@ class Check_Hardcoded_Secrets:
                     f'    Code snippet  : {Fore.LIGHTBLACK_EX}{secret[1].replace(secret[2], f"{Back.LIGHTRED_EX}{Fore.WHITE}{secret[2]}{Back.RESET}{Fore.LIGHTBLACK_EX}")}{Back.RESET}{Fore.RESET}')
                 print(
                     f'       Position   : line {Fore.YELLOW}{secret[0] + 1} {Fore.RESET}in file "{Fore.LIGHTYELLOW_EX}{file.replace(os.path.basename(file), Fore.LIGHTBLUE_EX+os.path.basename(file))}{Fore.RESET}"\n')
+
+        return hardcoded_secrets
 
 
 def test(file_list: List[str]):

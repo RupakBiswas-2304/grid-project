@@ -29,11 +29,12 @@ def main(code):
         try:
             node_cve = check_node_cve(code)
         except Exception as e:
+            print("error")
             print(e)
-        
-        for n in node_cve:
-            print(n)
 
-        CVEs = pypi_cve
+        # for n in node_cve:
+        #     print(n)
+
+        # CVEs = pypi_cve
 
         return pypi_cve, node_cve
