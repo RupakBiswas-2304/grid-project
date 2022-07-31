@@ -28,8 +28,22 @@ class Report:
             f.write(content)
 
     def dependency(self, pypi, node):
-        pass
-        # print(pypi, node)
+        content_py = f"""
+
+# Python Dependencies
+
+-   ### Total Python dependencies : {len(pypi["requirements"])}
+-   ### Total vulnerable Python dependencies : {len(pypi["CVEs"])} 
+
+### Vulnerabilities :
+
+        """
+        for cve in pypi["CVEs"]:
+            content_py += f"""
+-   `{cve["aliases"][0] if cve["aliases"] else "NO CVE SPECIFIED"}` : {cve["details"]}, Fixed in `{cve["fixed_in"][0]}`
+            """
+
+        self.write(content_py)
 
     def hardcoded_secrets(self, secrets: List[Tuple[str, List[Tuple[int, str, str]]]]):
         content = """
