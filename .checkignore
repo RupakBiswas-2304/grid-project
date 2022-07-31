@@ -9,3 +9,5 @@ __pycache__/
 .*\.svg
 .*\.ico
 \.vscode/
+venv/
+env/

@@ -77,6 +77,7 @@ def cli():
             LocalClone_Code = LocalClone(url)
             LocalClone_Code.clone_repo()
             code = Code(LocalClone_Code, "github")
+            print("Checking dependencies...")
             code.dependency_check()
             code.hardcoded_secret_check()
             code.php_vuln_check()
@@ -85,8 +86,8 @@ def cli():
         elif command == "5":
             LocalClone_Code = LocalClone('tmp')
             code = Code(LocalClone_Code, "github")
-            code.dependency_check()
-            code.hardcoded_secret_check()
+            # code.dependency_check()
+            # code.hardcoded_secret_check()
             # code.php_vuln_check()
             code.code_check()
 
