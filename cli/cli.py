@@ -7,6 +7,7 @@ from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.php_vuln_check.phpvuln import main as m
 from vulncheck.code_check.main import main as main4
 from .tree import flatten_tree
+from cli.ascii_art import anya
 import datetime
 
 Menu = '''
@@ -58,6 +59,7 @@ def report_top(url):
 def cli():
     print('Welcome to the file download utility!')
     while(True):
+        print(anya)
         print(Menu)
         command = input('$> ')
 
