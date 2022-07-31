@@ -341,4 +341,6 @@ def main(path):
     for v in vulns:
         print(v)
 
+    return vulns
+
     # print(SUS_FUNCTIONS)

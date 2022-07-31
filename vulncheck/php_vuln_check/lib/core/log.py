@@ -13,6 +13,16 @@ def found(file, line, no, vuln_part, vuln):
         f'       Position     : line {Fore.YELLOW}{no} {Fore.RESET}in file "{Fore.LIGHTYELLOW_EX}{file.replace(os.path.basename(file), Fore.LIGHTBLUE_EX+os.path.basename(file))}{Fore.RESET}"')
     print()
 
+def report_found(file, line, no, vuln_part, vuln,filename):
+    content = f'''
+-   Found : potential {vuln} found in line no {no} in file {file}
+    ```php
+        {vuln_part}
+    ```
+    '''
+    with open(filename, 'a') as f:
+        print(":flag:",filename)
+        f.write(content)
 
 def error(text, should_exit=True):
     print(f'{Fore.RED}ERROR:{Fore.RESET} {text}{Fore.RESET}.')

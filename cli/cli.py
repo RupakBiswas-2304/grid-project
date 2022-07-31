@@ -33,11 +33,12 @@ class Code():
         checker = Check_Hardcoded_Secrets(self.tree)
         return checker.find_and_print_hardcoded_secrets()
 
-    def php_vuln_check(self):
-        m(self.tree)
+    def php_vuln_check(self,filepath):
+        m(self.tree,filepath)
 
     def code_check(self):
-        main4(self)
+        return main4(self)
+
 
     def initiate_analysis(self):
         report = Report(self.source.url)
@@ -48,9 +49,9 @@ class Code():
         secrets = self.hardcoded_secret_check()
         report.hardcoded_secrets(secrets)
 
-        self.code_check()
-
-        self.php_vuln_check()
+        # self.code_check()
+        report.code_check(self.code_check())
+        self.php_vuln_check(report.filename)
 
 
 def cli():
