@@ -1,3 +1,4 @@
+from signal import valid_signals
 import requests
 import re
 import json
@@ -50,7 +51,10 @@ def check_node_cve(code):
     total_vuln = vul["info"] + vul["low"] + \
         vul["moderate"] + vul["high"] + vul["critical"]
 
+
     if total_vuln != 0:
+        for v in total_vuln:
+            print(v)
         print(f"Found {total_vuln} vulnerabilities in package-lock.json")
         print(
             f"info: {vul['info']} \nlow: {vul['low']} \nmoderate: {vul['moderate']} \nhigh: {vul['high']} \ncritical: {vul['critical']}")
