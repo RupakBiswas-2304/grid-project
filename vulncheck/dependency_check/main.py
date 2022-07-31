@@ -29,7 +29,6 @@ def main(code):
         try:
             node_cve = check_node_cve(code)
         except Exception as e:
-            print("error")
             print(e)
 
         # for n in node_cve:

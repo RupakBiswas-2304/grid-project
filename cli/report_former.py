@@ -43,7 +43,23 @@ class Report:
 -   `{cve["aliases"][0] if cve["aliases"] else "NO CVE SPECIFIED"}` : {cve["details"]}, Fixed in `{cve["fixed_in"][0]}`
             """
 
+        content_npm = f"""
+# Node Dependencies
+
+### Vulnerabilities :
+
+-   ### Total Node dependencies : {len(node["requirements"])}
+-   ### Total vulnerable Node dependencies : {len(node["CVEs"])} 
+
+        """
+
+        for cve in node["CVEs"]:
+            content_npm += f"""
+-   `{cve["cves"][0] if cve["cves"] else "NO CVE SPECIFIED"}` : {cve["title"]} [**{cve["module_name"]}**], with Severity of `{cve["severity"]}`
+            """
+
         self.write(content_py)
+        self.write(content_npm)
 
     def hardcoded_secrets(self, secrets: List[Tuple[str, List[Tuple[int, str, str]]]]):
         content = """
