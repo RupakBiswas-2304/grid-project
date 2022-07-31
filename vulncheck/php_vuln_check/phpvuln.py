@@ -89,7 +89,7 @@ def main(tree: List[str],filepath : str):
             f'phpvuln finished with {Fore.GREEN}{found} {Fore.RESET}potential vulnerabilit{"y" if found == 1 else "ies"} found')
         log.vuls(xss, sqli, rfi, lfi, ip, cred, cmdi)
     else:
-        log.info(f'phpvuln finished, but no potential vulnerabilities were found')
+        log.info(f'Scan finished, but no potential vulnerabilities were found')
 
 
 if __name__ == '__main__':
