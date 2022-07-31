@@ -61,11 +61,11 @@ def check_node_cve(code):
         print(f'{Fore.RED}Could not find any package-lock.json file!{Fore.RESET}')
 
     if result:
-        for i in range(result["advisories"].keys()):
+        for i in result["advisories"].keys():
             print(result["advisories"][i]["module_name"])
             print(result["advisories"][i]["title"])
             print(result["advisories"][i]["cves"])
             print(result["advisories"][i]["severity"])
-
+            
 
     return vul
