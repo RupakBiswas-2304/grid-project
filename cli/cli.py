@@ -7,7 +7,7 @@ from vulncheck.hardcoded_secret_check.main import Check_Hardcoded_Secrets
 from vulncheck.php_vuln_check.phpvuln import main as m
 from vulncheck.code_check.main import main as main4
 from .tree import flatten_tree
-
+import datetime
 
 Menu = '''
 Enter your source:
@@ -45,11 +45,24 @@ class Code():
         self.code_check()
 
 
+def report_top(url):
+    report_top = f'''
+<h1 align="center"> Code Report for {url} </h1>
+<h4 align="right"> Created By Static Code Analyser 1.0.0 </h4>
+<h4 align="right">{ datetime.datetime.now() }</h4>
+#
+    '''
+    return report_top
+
+
 def cli():
     print('Welcome to the file download utility!')
     while(True):
         print(Menu)
         command = input('$> ')
+
+        report = open("REPORT.md", "w")
+
         if command.lower() == 'exit':
             return
 
@@ -74,8 +87,9 @@ def cli():
             code = Code(Node_Code, 'node')
             code.initiate_analysis()
 
-        elif command == '3':
-            url = input('Enter the PyPI module name: ')
+        elif command == "3":
+            url = input("Enter the PyPI module name : ")
+            report.write(report_top(url))
             Pypi_Code = PypiClone(url)
             Pypi_Code.gather_info()
             Pypi_Code.download_file()
@@ -89,6 +103,7 @@ def cli():
             if not branch:
                 branch = None
 
+            report.write(report_top(url))
             LocalClone_Code = LocalClone(url, branch)
             LocalClone_Code.clone_repository()
             code = Code(LocalClone_Code, 'github')

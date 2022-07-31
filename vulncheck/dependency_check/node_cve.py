@@ -1,3 +1,4 @@
+from signal import valid_signals
 import requests
 import re
 import json
@@ -9,6 +10,7 @@ def check_node_cve(code):
     all_files = code.tree
     pattern = "(package-lock.json)"
     package_lock = []
+    print("Started Checking for node dependencies")
     for file in all_files:
         if re.search(pattern, file):
             package_lock.append(file)
@@ -37,6 +39,7 @@ def check_node_cve(code):
         }
         response = requests.request("POST", url, headers=headers, data=payload)
         result = json.loads(response.text)
+        # print(result.keys())
         vul["info"] = vul["info"] + \
             result['metadata']['vulnerabilities']['info']
         vul["low"] = vul["low"] + result['metadata']['vulnerabilities']['low']
@@ -49,6 +52,7 @@ def check_node_cve(code):
 
     total_vuln = vul["info"] + vul["low"] + \
         vul["moderate"] + vul["high"] + vul["critical"]
+
 
     if total_vuln != 0:
         print(f"Found {total_vuln} vulnerabilities in package-lock.json")
