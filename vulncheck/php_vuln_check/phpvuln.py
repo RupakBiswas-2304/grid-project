@@ -1,6 +1,6 @@
 import os
-import sys
 import argparse
+from typing import List
 
 from colorama import Fore
 
@@ -13,7 +13,7 @@ from vulncheck.php_vuln_check.lib.core import log
 found = 0
 
 
-def main():
+def main(tree: List[str]):
 
     xss = 0
     sqli = 0
@@ -59,13 +59,15 @@ def main():
     for vuln in excluded_vulns:
         if not [_class for _class in vuln_classes if _class.keyname == vuln]:
             log.error(f'unrecognized common vulnerability: {vuln}')
-            exit(0)
+            return
+            # exit(0)
         included_vulns.remove(vuln)
 
     for vuln in included_vulns:
         if not [_class for _class in vuln_classes if _class.keyname == vuln]:
             log.error(f'unrecognized common vulnerability: {vuln}')
-            exit(0)
+            return
+            # exit(0)
 
     global found
 

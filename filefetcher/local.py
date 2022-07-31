@@ -1,24 +1,19 @@
-import sys
 import os
 import subprocess
+from filefetcher.BaseClone import BaseClone
+from config import LOCAL_REPOSITORY_DIRECTORY
 
-class LocalClone():
-    def __init__(self,url):
-        self.url = url
-        self.type = "local"
-    def clone_repo(self):
-        print("Cloneing repo....")
-        try:
-            subprocess.call(["rm", "-rf", "tmp"])
-            subprocess.call(['mkdir','tmp'])
-            if os.path.isdir(f'{self.url}/.git'):
-                subprocess.call(["git", "clone", self.url, "tmp"])
-            else:
-                subprocess.call(["cp", "-r", self.url, "tmp"])
+TYPE = 'LOCAL'
 
-        except Exception as e:
-            print(e)
-            print("Error: Could not clone repo")
-            sys.exit()
-        print("Cloned repo")
-    
+
+class LocalClone(BaseClone):
+    def __init__(self, url: str, branch: str | None):
+        super().__init__(url, branch)
+
+    def clone_repository(self):
+        if os.path.isdir(f'{self.remote}/.git'):
+            super().clone_repository()
+        else:
+            self.refresh_temp()
+            subprocess.call(
+                ['cp', '-r', self.remote, LOCAL_REPOSITORY_DIRECTORY])

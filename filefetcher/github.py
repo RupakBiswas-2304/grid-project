@@ -1,19 +1,8 @@
-import sys
-import subprocess
+from filefetcher.BaseClone import BaseClone
 
-class GithubClone():
-    def __init__(self,url):
-        self.url = url
-        self.type = "github"
+TYPE = "GITHUB"
 
-    def download_repo(self):
-        print("Downloading repo...")
-        try:
-            subprocess.call(["rm", "-rf", "tmp"])
-            subprocess.call(['mkdir','tmp'])
-            subprocess.call(["git", "clone", self.url, "tmp"])
-        except Exception as e:
-            print(e)
-            print("Error: Could not download repo")
-            sys.exit()
-        print("Downloaded repo")
+
+class GithubClone(BaseClone):
+    def __init__(self, remote: str, branch: str | None):
+        super().__init__(remote, branch)

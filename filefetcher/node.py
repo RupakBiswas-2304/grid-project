@@ -3,9 +3,11 @@ import subprocess
 import requests
 
 
+TYPE = "NPM"
+
+
 class NodeClone():
-    def __init__(self, url):
-        self.type = "node"
+    def __init__(self, url: str):
         version = "latest"
         if ("==" in url):
             version = url.split("==")[1]

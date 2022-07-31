@@ -28,8 +28,6 @@ def form_sink_pattern() -> Pattern[str]:
             pattern += fr"{p.strip()}|"
     pattern += r')'
 
-    # print(f"Final pattern: {re.compile(pattern)}")
-
     return re.compile(pattern)
 
 
@@ -140,7 +138,7 @@ def analyze_line(s: str, output: List, index: int, source: dict, sink: list, vul
     global TAB_SIZE
     global SUS_FUNCTIONS
     for index in range(len(s)):
-        # print(index)    
+        # print(index)
         '''
         s = whole code base
         index = current index
@@ -292,7 +290,7 @@ def analyze_line(s: str, output: List, index: int, source: dict, sink: list, vul
                     while (len(data["in"]) > t//TAB_SIZE):
                         data["in"].pop()
                 except:
-                    data["in"] = []                    
+                    data["in"] = []
             # scope = output[-1].copy()
             # print("🚩",data["in"])
             k = len(output)-1
@@ -339,7 +337,7 @@ def main(path):
     data, vulns, source, sink, source_list = analyze_line(
         lines, [], 0, {}, [], [], x)
     # print(source,sink,source_list)
-    list(set(vulns))
+    vulns = set(vulns)
     for v in vulns:
         print(v)
 
