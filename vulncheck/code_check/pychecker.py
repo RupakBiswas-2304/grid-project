@@ -38,11 +38,11 @@ SINK_PATTERN: Pattern[str] = form_sink_pattern()
 
 def find_sink(line) -> bool:
     """
-    TODO :
+    TODO:
         execute, commit, ...
     """
     # return bool(re.match(r'return\s*.*', line))
-    return bool(SINK_PATTERN.match(line))
+    return not not SINK_PATTERN.match(line)
 
 # kuch toh hai ye ... dinesh ko pata hai
 
