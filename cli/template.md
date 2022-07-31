@@ -37,3 +37,10 @@
 # PHP vulnerabilities
 ### Vulnerablitys :
 
+# Python Static Code Scan Report
+### Vulnerablitys :
+- Found vulnerablity in line no `34` of file `/auth/settings.py`
+     - insecure `hash` function used.
+    ```bash
+    SECRET_KEY = 'hx=g7s^%^t7by-9fxw@65(0^1b88k#&9jbo)cmg%awa+)khp2v'
+    ```
